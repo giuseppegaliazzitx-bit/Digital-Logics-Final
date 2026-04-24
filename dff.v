@@ -1,25 +1,22 @@
-// ============================================================
-// Module: dff
-// Description: D Flip-Flop with synchronous reset and enable.
-//              This is behavioral per assignment specification.
-//              All registers in the system are built from this DFF.
-// Inputs:  clk   - system clock (rising edge triggered)
-//          reset - synchronous active-high reset
-//          en    - enable signal (holds state if 0)
-//          d     - data input
-// Outputs: q     - stored output
-// ============================================================
-module dff (
-    input  wire clk,
-    input  wire reset,
-    input  wire en,
-    input  wire d,
-    output reg  q
+module dff #(parameter WIDTH = 1)(
+    input clk,
+    input reset,
+    input en,
+    input [WIDTH-1:0] d,
+    output [WIDTH-1:0] q
 );
-    always @(posedge clk) begin
-        if (reset)
-            q <= 1'b0;
-        else if (en)
-            q <= d;
+
+genvar i;
+generate
+    for (i = 0; i < WIDTH; i = i + 1) begin : dff_array
+        dff_1bit bit_inst (
+            .clk(clk),
+            .reset(reset),
+            .en(en),
+            .d(d[i]),
+            .q(q[i])
+        );
     end
+endgenerate
+
 endmodule

@@ -1,0 +1,26 @@
+=== LIGHTSABER CONTROL SYSTEM TEST ===
+Time | Opcode | Data_in | blade_length | blade_color | blade_count | error_reg | power | lock
+16000 | 0000 Power OFF      | power_status=0
+26000 | 0001 Power ON       | power_status=1
+36000 | 0010 Set Length     | blade_length=100
+46000 | 0011 Increment      | blade_length=101
+56000 | 0011 Increment      | blade_length=102
+66000 | 0100 Decrement      | blade_length=101
+76000 | 0101 Set Color      | blade_color=5
+86000 | 0110 Set Count      | blade_count=3
+96000 | 0111 Lock           | lock_status=1
+106000 | 1000 Unlock         | lock_status=0
+116000 | 1001 Reset Errors   | error_reg=0
+126000 | 1010 Toggle Power   | power_status=0
+136000 | 1010 Toggle Power   | power_status=1
+146000 | 0010 Set Length=4   | blade_length=4
+156000 | 1011 Double Length  | blade_length=8
+166000 | 1100 Clear Length   | blade_length=0
+176000 | 1101 Maximize       | blade_length=ffffffff
+186000 | 1110 Set Error      | error_reg=7
+196000 | 1001 Reset Errors   | error_reg=0
+206000 | 0010 Set Length=15  | blade_length=15
+216000 | 1111 Invert Length  | blade_length=fffffff0
+226000 | 0000 Power OFF      | power_status=0
+=== TEST COMPLETE ===
+stimulus.v:147: $finish called at 226000 (1ps)

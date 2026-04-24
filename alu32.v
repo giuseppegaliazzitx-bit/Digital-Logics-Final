@@ -1,21 +1,48 @@
-// ============================================================
-// Module: alu32
-// Description: 32-bit Arithmetic Logic Unit (Length_ALU)
-//              Performs Add (010) or Subtract (110).
-// ============================================================
-module alu32 (
-    input  wire [31:0] a,
-    input  wire [31:0] b,
-    input  wire [2:0]  op_code,
-    output wire [31:0] result,
-    output wire        cout,
-    output wire        bout
+module alu32(
+    input [31:0] a,
+    input [31:0] b,
+    input [2:0] ctr,
+    output [31:0] ans,
+    output carry
 );
-    wire sub = (op_code == 3'b110);
-    assign result = sub ? (a - b) : (a + b);
-    
-    wire [32:0] sum_ext = {1'b0, a} + {1'b0, b};
-    assign cout = sum_ext[32];
-    
-    assign bout = (a < b);
+
+wire [31:0] add_result;
+wire [31:0] sub_result;
+wire add_carry;
+wire sub_borrow;
+wire [31:0] mux_out;
+
+// Instantiate adder
+adder32 adder(
+    .a(a),
+    .b(b),
+    .sum(add_result),
+    .carry_out(add_carry)
+);
+
+// Instantiate subtractor
+subtractor32 subtractor(
+    .a(a),
+    .b(b),
+    .diff(sub_result),
+    .borrow_out(sub_borrow)
+);
+
+// CTR[1] selects between add and subtract
+// ctr=010 → add, ctr=110 → subtract
+// CTR[2] is the differentiating bit (0=add, 1=sub)
+mux2to1 #(32) result_mux(
+    .in0(add_result),
+    .in1(sub_result),
+    .sel(ctr[2]),
+    .out(ans)
+);
+
+mux2to1 #(1) carry_mux(
+    .in0(add_carry),
+    .in1(sub_borrow),
+    .sel(ctr[2]),
+    .out(carry)
+);
+
 endmodule
