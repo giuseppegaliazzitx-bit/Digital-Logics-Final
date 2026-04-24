@@ -1,19 +1,17 @@
 // ============================================================
 // Module: register1
-// Description: 1-bit register built from a single DFF with enable.
+// Description: 1-bit register built from a single DFF.
 //              Used for power_status and lock_status registers.
 // Inputs:  clk   - system clock
 //          reset - active-high reset (clears to 0)
-//          en    - enable signal
 //          d     - next value to store
 // Outputs: q     - current stored value
 // ============================================================
 module register1 (
     input  wire clk,
     input  wire reset,
-    input  wire en,
     input  wire d,
     output wire q
 );
-    dff ff0 (.clk(clk), .reset(reset), .en(en), .d(d), .q(q));
+    dff ff0 (.clk(clk), .reset(reset), .d(d), .q(q));
 endmodule
